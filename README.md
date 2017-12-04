@@ -45,3 +45,4 @@ dep status -dot | dot -Tpng -o dependency.png
 
 [text]: https://github.com/spiegel-im-spiegel/text "spiegel-im-spiegel/text: Encoding/Decoding Text Package by Golang"
 [Golang]: https://golang.org/ "The Go Programming Language"
+[dep]: https://github.com/golang/dep "golang/dep: Go dependency management tool"
