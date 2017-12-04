@@ -16,12 +16,12 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/text"
-  packages = ["encoding","encoding/internal","encoding/internal/identifier","encoding/japanese","internal/gen","transform","unicode/cldr"]
+  packages = ["encoding","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","internal/gen","transform","unicode/cldr"]
   revision = "556d234e9c5239918de4d1fe247d1fe004e71764"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e5931db2a897c9c9d17d92dfa5f18b74b37cf74214dd20acc8ca07d2ae45de9d"
+  inputs-digest = "3244d489c5c1bfb69b3404eb87bd4d7f76398a543dbe4398fd49a91220757c0c"
   solver-name = "gps-cdcl"
   solver-version = 1
