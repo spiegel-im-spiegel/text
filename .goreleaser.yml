@@ -2,7 +2,7 @@ project_name: text
 release:
   github:
     owner: spiegel-im-spiegel
-    name: gonkf
+    name: text
 
 builds:
 - goos:
