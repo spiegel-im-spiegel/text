@@ -1,33 +1,26 @@
 package detect
 
-import "github.com/pkg/errors"
-
-var (
-	//ErrNoImplement is error "no implementation"
-	ErrNoImplement = errors.New("no implementation")
-)
-
 //CharEncoding is type of character encoding
 type CharEncoding int
 
 const (
-	//Unknown is unknown character
+	//Unknown is unknown character encoding
 	Unknown CharEncoding = iota
-	//UTF8 is UTF-8
+	//UTF8 is UTF-8 encoding
 	UTF8
-	//ISO8859L1 is ISO-8859-1 (Latin-1)
+	//ISO8859L1 is ISO-8859-1 (Latin-1) encoding
 	ISO8859L1
-	//ShiftJIS is Shift-JIS
+	//ShiftJIS is Shift-JIS encoding
 	ShiftJIS
-	//EUCJP is EUC-JP
+	//EUCJP is EUC-JP encoding
 	EUCJP
-	//ISO2022JP is ISO-2022-JP
+	//ISO2022JP is ISO-2022-JP encoding
 	ISO2022JP
-	//EUCKR is EUC-KR
+	//EUCKR is EUC-KR encoding
 	EUCKR
-	//GB18030 is GB-18030
+	//GB18030 is GB-18030 encoding
 	GB18030
-	//Big5 is Big5
+	//Big5 is Big5 encoding
 	Big5
 )
 
@@ -47,7 +40,6 @@ func typeofEncoding(s string) CharEncoding {
 		return e
 	}
 	return Unknown
-
 }
 
 func (e CharEncoding) String() string {

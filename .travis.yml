@@ -17,3 +17,6 @@ install:
 
 script:
   - go test ./...
+
+after_success:
+  - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash

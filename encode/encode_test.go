@@ -2,12 +2,14 @@ package encode
 
 import (
 	"bytes"
+	"fmt"
+	"io"
 	"testing"
 
 	"github.com/spiegel-im-spiegel/text/detect"
 )
 
-func TestToJa(t *testing.T) {
+func TestFromUTF8To(t *testing.T) {
 	testCase := []struct {
 		e   detect.CharEncoding
 		txt []byte
@@ -21,12 +23,28 @@ func TestToJa(t *testing.T) {
 	}
 
 	for _, tst := range testCase {
-		res, err := FromUTF8To(tst.e, tst.txt)
+		res, err := FromUTF8To(tst.e, bytes.NewReader(tst.txt))
 		if err != nil {
 			t.Errorf("ToUTF8ja(%v)  = \"%v\", want nil.", tst.txt, err)
 		}
-		if bytes.Compare(res, tst.res) != 0 {
-			t.Errorf("ToUTF8ja(%v)  = \"%v\", want \"%v\".", tst.txt, res, tst.res)
+		buf := new(bytes.Buffer)
+		io.Copy(buf, res)
+		if bytes.Compare(buf.Bytes(), tst.res) != 0 {
+			t.Errorf("ToUTF8ja(%v)  = \"%v\", want \"%v\".", tst.txt, buf, tst.res)
 		}
 	}
+}
+
+func ExampleFromUTF8To() {
+	utf8Text := "こんにちは，世界\n"
+	res, err := FromUTF8To(detect.ISO2022JP, bytes.NewBufferString(utf8Text))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	buf := new(bytes.Buffer)
+	io.Copy(buf, res)
+	fmt.Println(buf.Bytes())
+	// Output:
+	// [27 36 66 36 51 36 115 36 75 36 65 36 79 33 36 64 36 51 38 27 40 66 10]
 }

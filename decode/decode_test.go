@@ -3,6 +3,7 @@ package decode
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"testing"
 )
 
@@ -19,36 +20,42 @@ func TestToUTF8ja(t *testing.T) {
 	}
 
 	for _, tst := range testCase {
-		res, err := ToUTF8ja(tst.txt)
+		res, err := ToUTF8ja(bytes.NewReader(tst.txt))
 		if err != nil {
 			t.Errorf("ToUTF8ja(%v)  = \"%v\", want nil.", tst.txt, err)
 		}
-		if bytes.Compare(res, tst.res) != 0 {
-			t.Errorf("ToUTF8ja(%v)  = \"%v\", want \"%v\".", tst.txt, string(res), string(tst.res))
+		buf := new(bytes.Buffer)
+		io.Copy(buf, res)
+		if bytes.Compare(buf.Bytes(), tst.res) != 0 {
+			t.Errorf("ToUTF8ja(%v)  = \"%v\", want \"%v\".", tst.txt, buf.String(), string(tst.res))
 		}
 	}
 }
 
 func ExampleToUTF8() {
 	jisText := []byte{0x1b, 0x24, 0x42, 0x24, 0x33, 0x24, 0x73, 0x24, 0x4b, 0x24, 0x41, 0x24, 0x4f, 0x40, 0x24, 0x33, 0x26, 0x1b, 0x28, 0x42}
-	res, err := ToUTF8(jisText)
+	res, err := ToUTF8(bytes.NewReader(jisText))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(string(res))
+	buf := new(bytes.Buffer)
+	io.Copy(buf, res)
+	fmt.Println(buf)
 	// Output:
 	// こんにちは世界
 }
 
 func ExampleToUTF8ja() {
 	jisText := []byte{0x1b, 0x24, 0x42, 0x24, 0x33, 0x24, 0x73, 0x24, 0x4b, 0x24, 0x41, 0x24, 0x4f, 0x40, 0x24, 0x33, 0x26, 0x1b, 0x28, 0x42}
-	res, err := ToUTF8ja(jisText)
+	res, err := ToUTF8ja(bytes.NewReader(jisText))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(string(res))
+	buf := new(bytes.Buffer)
+	io.Copy(buf, res)
+	fmt.Println(buf)
 	// Output:
 	// こんにちは世界
 }
