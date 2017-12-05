@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io"
 
+	"github.com/spiegel-im-spiegel/text"
 	"github.com/spiegel-im-spiegel/text/detect"
 	"golang.org/x/text/encoding/japanese"
 	"golang.org/x/text/encoding/korean"
@@ -13,7 +14,7 @@ import (
 )
 
 //FromUTF8To returns encoded text from UTF-8 text
-func FromUTF8To(e detect.CharEncoding, txt []byte) ([]byte, error) {
+func FromUTF8To(e detect.CharEncoding, txt io.Reader) (io.Reader, error) {
 	var encoder transform.Transformer
 	switch e {
 	case detect.UTF8, detect.ISO8859L1:
@@ -31,9 +32,9 @@ func FromUTF8To(e detect.CharEncoding, txt []byte) ([]byte, error) {
 	case detect.Big5:
 		encoder = traditionalchinese.Big5.NewEncoder()
 	default:
-		return nil, detect.ErrNoImplement
+		return nil, text.ErrNoImplement
 	}
 	buf := new(bytes.Buffer)
-	_, err := io.Copy(transform.NewWriter(buf, encoder), bytes.NewReader(txt))
-	return buf.Bytes(), err
+	_, err := io.Copy(transform.NewWriter(buf, encoder), txt)
+	return buf, err
 }

@@ -2,6 +2,7 @@ package encode
 
 import (
 	"bytes"
+	"io"
 	"testing"
 
 	"github.com/spiegel-im-spiegel/text/detect"
@@ -21,12 +22,14 @@ func TestToJa(t *testing.T) {
 	}
 
 	for _, tst := range testCase {
-		res, err := FromUTF8To(tst.e, tst.txt)
+		res, err := FromUTF8To(tst.e, bytes.NewReader(tst.txt))
 		if err != nil {
 			t.Errorf("ToUTF8ja(%v)  = \"%v\", want nil.", tst.txt, err)
 		}
-		if bytes.Compare(res, tst.res) != 0 {
-			t.Errorf("ToUTF8ja(%v)  = \"%v\", want \"%v\".", tst.txt, res, tst.res)
+		buf := new(bytes.Buffer)
+		io.Copy(buf, res)
+		if bytes.Compare(buf.Bytes(), tst.res) != 0 {
+			t.Errorf("ToUTF8ja(%v)  = \"%v\", want \"%v\".", tst.txt, buf, tst.res)
 		}
 	}
 }

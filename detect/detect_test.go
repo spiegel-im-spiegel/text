@@ -1,6 +1,7 @@
 package detect
 
 import (
+	"bytes"
 	"fmt"
 	"testing"
 )
@@ -18,7 +19,7 @@ func TestEncoding(t *testing.T) {
 	}
 
 	for _, tst := range testCase {
-		e := EncodingJa(tst.txt)
+		e := EncodingJa(bytes.NewReader(tst.txt))
 		if e != tst.e {
 			t.Errorf("Encoding(%v)  = \"%v\", want \"%v\".", tst.txt, e, tst.e)
 		}
@@ -26,14 +27,14 @@ func TestEncoding(t *testing.T) {
 }
 
 func ExampleEncodingBest() {
-	e := EncodingBest([]byte("Hello World"))
+	e := EncodingBest(bytes.NewBufferString("Hello World"))
 	fmt.Println(e)
 	// Output:
 	// ISO-8859-1
 }
 
 func ExampleEncodingJa() {
-	e := EncodingJa([]byte("こんにちは，世界"))
+	e := EncodingJa(bytes.NewBufferString("こんにちは，世界"))
 	fmt.Println(e)
 	// Output:
 	// UTF-8

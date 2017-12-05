@@ -38,7 +38,7 @@ fmt.Println(string(res))
 ## Dependencies
 
 ```
-dep status -dot | dot -Tpng -o dependency.png
+$ dep status -dot | dot -Tpng -o dependency.png
 ```
 
 [![Dependencies](dependency.png)](dependency.png)

@@ -1,15 +1,17 @@
 package detect
 
 import (
+	"bytes"
+	"io"
+
 	"github.com/saintfish/chardet"
 )
 
-//Encoding returns CharEncoding of text
-func Encoding(txt []byte, lang string) CharEncoding {
-	//if utf8.Valid(txt) {
-	//	return UTF8
-	//}
-	all, err := chardet.NewTextDetector().DetectAll(txt)
+//Encoding returns character encoding of text
+func Encoding(txt io.Reader, lang string) CharEncoding {
+	buf := new(bytes.Buffer)
+	io.Copy(buf, txt)
+	all, err := chardet.NewTextDetector().DetectAll(buf.Bytes())
 	if err != nil {
 		return Unknown
 	}
@@ -29,12 +31,12 @@ func Encoding(txt []byte, lang string) CharEncoding {
 	return typeofEncoding(all[0].Charset)
 }
 
-//EncodingBest returns CharEncoding of text (best selection)
-func EncodingBest(txt []byte) CharEncoding {
+//EncodingBest returns character encoding of text (best selection)
+func EncodingBest(txt io.Reader) CharEncoding {
 	return Encoding(txt, "")
 }
 
-//EncodingJa returns CharEncoding of text (Japanese only)
-func EncodingJa(txt []byte) CharEncoding {
+//EncodingJa returns character encoding of text (Japanese only)
+func EncodingJa(txt io.Reader) CharEncoding {
 	return Encoding(txt, "ja")
 }

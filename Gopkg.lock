@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
+
+[[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
@@ -14,6 +20,24 @@
   revision = "3af4cd4741ca4f3eb0c407c034571a6fb0ea529c"
 
 [[projects]]
+  name = "github.com/spf13/cobra"
+  packages = ["."]
+  revision = "7b2c5ac9fc04fc5efafb60700713d4fa609b777b"
+  version = "v0.0.1"
+
+[[projects]]
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/spiegel-im-spiegel/gocli"
+  packages = ["."]
+  revision = "d80ff117c2cb7e41be5605ede6291c43d7b2e397"
+  version = "v0.4.4"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/text"
   packages = ["encoding","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","internal/gen","transform","unicode/cldr"]
@@ -22,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3244d489c5c1bfb69b3404eb87bd4d7f76398a543dbe4398fd49a91220757c0c"
+  inputs-digest = "8cb470b9473d883ced45d5814354ee794b35a08af043f3043a3d42f0ddc23b9a"
   solver-name = "gps-cdcl"
   solver-version = 1
