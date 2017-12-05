@@ -6,6 +6,7 @@ import (
 
 	"github.com/spiegel-im-spiegel/text/detect"
 	"github.com/spiegel-im-spiegel/text/newline"
+	"github.com/spiegel-im-spiegel/text/normalize"
 )
 
 var encodingMap = map[string]detect.CharEncoding{
@@ -46,4 +47,16 @@ var newlineNames = []string{
 //AvailableNewlineOptionsList return available newline options list
 func AvailableNewlineOptionsList() string {
 	return strings.Join(newlineNames, " ")
+}
+
+var normNames = []string{
+	normalize.NFC.String(),
+	normalize.NFD.String(),
+	normalize.NFKC.String(),
+	normalize.NFKD.String(),
+}
+
+//NormOptionsList return normalization form list
+func NormOptionsList() string {
+	return strings.Join(normNames, " ")
 }

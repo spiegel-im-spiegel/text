@@ -61,7 +61,7 @@ fmt.Println(buf.Bytes())
 
 ```go
 jisText := []byte{0x1b, 0x24, 0x42, 0x24, 0x33, 0x24, 0x73, 0x24, 0x4b, 0x24, 0x41, 0x24, 0x4f, 0x40, 0x24, 0x33, 0x26, 0x1b, 0x28, 0x42}
-res, err := FromTo(detect.ISO2022JP, detect.UTF8, bytes.NewReader(jisText))
+res, err := convert.FromTo(detect.ISO2022JP, detect.UTF8, bytes.NewReader(jisText))
 if err != nil {
     fmt.Println(err)
     return
@@ -71,6 +71,17 @@ io.Copy(buf, res)
 fmt.Println(buf)
 // Output:
 // こんにちは世界
+```
+
+### normalize
+
+```go
+res := normalize.Do(bytes.NewBufferString("ﾍﾟﾝｷﾞﾝ"), normalize.NFKC)
+buf := new(bytes.Buffer)
+io.Copy(buf, res)
+fmt.Println(buf)
+// Output:
+// ペンギン
 ```
 
 ## Command Line Interface
@@ -86,6 +97,7 @@ Available Commands:
   guess       Guess character encoding of text
   help        Help about any command
   list        List of available character encoding
+  norm        Unicode normalization
   version     Print the version number of gonkf
 
 Flags:
@@ -113,7 +125,7 @@ UTF-8
 ### conv sub-command
 
 ```
-$ gonkf -h
+$ gonkf conv -h
 Convert character encoding of text
 
 Usage:
@@ -128,6 +140,24 @@ Flags:
 
 $ gonkf conv -d utf8 testdata/SHIFT_JIS.txt
 こんにちは。世界の国から。
+```
+
+### norm sub-command
+
+```
+$ gonkf norm -h
+Unicode normalization
+
+Usage:
+  gonkf norm [flags] [text file]
+
+Flags:
+  -f, --form string     normalization form (default "nfc")
+  -h, --help            help for norm
+  -o, --output string   output file path
+
+$ echo ﾍﾟﾝｷﾞﾝ | gonkf norm -f NFKC
+ペンギン
 ```
 
 ### list sub-command
@@ -145,6 +175,7 @@ Flags:
 $ gonkf list
 available encoding: big5 eucjp euckr gb18030 jis sjis utf8
    type of newline: lf cr crlf
+normalization form: nfc nfd nfkc nfkd
 ```
 
 ## Dependencies

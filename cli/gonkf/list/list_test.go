@@ -44,3 +44,11 @@ func TestAvailableNewlineOptionsList(t *testing.T) {
 		t.Errorf("AvailableNewlineOptionsList()  = \"%v\", want \"%v\".", str, ref)
 	}
 }
+
+func TestNormOptionsList(t *testing.T) {
+	str := NormOptionsList()
+	ref := "nfc nfd nfkc nfkd"
+	if str != ref {
+		t.Errorf("NormOptionsList()  = \"%v\", want \"%v\".", str, ref)
+	}
+}
