@@ -86,6 +86,10 @@ fmt.Println(buf)
 
 ## Command Line Interface
 
+### Binaries
+
+See [latest release](https://github.com/spiegel-im-spiegel/text/releases/latest).
+
 ```
 $ gonkf -h
 Usage:
