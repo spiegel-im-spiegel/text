@@ -1,5 +1,15 @@
 package detect
 
+import (
+	"golang.org/x/text/encoding"
+	"golang.org/x/text/encoding/charmap"
+	"golang.org/x/text/encoding/japanese"
+	"golang.org/x/text/encoding/korean"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/encoding/traditionalchinese"
+	"golang.org/x/text/encoding/unicode"
+)
+
 //CharEncoding is type of character encoding
 type CharEncoding int
 
@@ -24,7 +34,18 @@ const (
 	Big5
 )
 
-var encodingMap = map[string]CharEncoding{
+var encodingMap = map[CharEncoding]encoding.Encoding{
+	UTF8:      unicode.UTF8,
+	ISO8859L1: charmap.ISO8859_1,
+	ShiftJIS:  japanese.ShiftJIS,
+	EUCJP:     japanese.EUCJP,
+	ISO2022JP: japanese.ISO2022JP,
+	EUCKR:     korean.EUCKR,
+	GB18030:   simplifiedchinese.GB18030,
+	Big5:      traditionalchinese.Big5,
+}
+
+var encodingNameMap = map[string]CharEncoding{
 	"UTF-8":       UTF8,
 	"ISO-8859-1":  ISO8859L1,
 	"Shift_JIS":   ShiftJIS,
@@ -36,17 +57,27 @@ var encodingMap = map[string]CharEncoding{
 }
 
 func typeofEncoding(s string) CharEncoding {
-	if e, ok := encodingMap[s]; ok {
+	if e, ok := encodingNameMap[s]; ok {
 		return e
 	}
 	return Unknown
 }
 
 func (e CharEncoding) String() string {
-	for key, value := range encodingMap {
+	for key, value := range encodingNameMap {
 		if value == e {
 			return key
 		}
 	}
 	return "Unknown"
+}
+
+//GetEncoding returns Encoding instance
+func (e CharEncoding) GetEncoding() encoding.Encoding {
+	for key, value := range encodingMap {
+		if key == e {
+			return value
+		}
+	}
+	return nil
 }

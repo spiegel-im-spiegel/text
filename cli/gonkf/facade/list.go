@@ -13,6 +13,7 @@ var listCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cui.Outputln("available encoding:", list.AvailableEncodingList())
 		cui.Outputln("   type of newline:", list.AvailableNewlineOptionsList())
+		cui.Outputln("normalization form:", list.NormOptionsList())
 		return nil
 	},
 }
