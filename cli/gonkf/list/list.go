@@ -48,7 +48,7 @@ var newlineList = []newline.Option{
 func AvailableNewlineOptionsList() string {
 	sep := ""
 	buf := new(bytes.Buffer)
-	for nl := range newlineList {
+	for _, nl := range newlineList {
 		fmt.Fprintf(buf, "%s%v", sep, nl)
 		sep = " "
 	}
