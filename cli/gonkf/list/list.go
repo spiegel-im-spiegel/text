@@ -1,8 +1,7 @@
 package list
 
 import (
-	"bytes"
-	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/spiegel-im-spiegel/text/detect"
@@ -29,28 +28,22 @@ func TypeofEncoding(s string) detect.CharEncoding {
 
 //AvailableEncodingList return available character encoding list
 func AvailableEncodingList() string {
-	sep := ""
-	buf := new(bytes.Buffer)
-	for k := range encodingMap {
-		fmt.Fprintf(buf, "%s%s", sep, k)
-		sep = " "
+	var names []string
+	for key := range encodingMap {
+		names = append(names, key)
 	}
-	return buf.String()
+	sort.Strings(names)
+	return strings.Join(names, " ")
+
 }
 
-var newlineList = []newline.Option{
-	newline.LF,
-	newline.CR,
-	newline.CRLF,
+var newlineNames = []string{
+	newline.LF.String(),
+	newline.CR.String(),
+	newline.CRLF.String(),
 }
 
 //AvailableNewlineOptionsList return available newline options list
 func AvailableNewlineOptionsList() string {
-	sep := ""
-	buf := new(bytes.Buffer)
-	for _, nl := range newlineList {
-		fmt.Fprintf(buf, "%s%v", sep, nl)
-		sep = " "
-	}
-	return buf.String()
+	return strings.Join(newlineNames, " ")
 }

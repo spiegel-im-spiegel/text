@@ -143,7 +143,7 @@ Flags:
   -h, --help   help for list
 
 $ gonkf list
-available encoding: utf8 sjis eucjp jis euckr gb18030 big5
+available encoding: big5 eucjp euckr gb18030 jis sjis utf8
    type of newline: lf cr crlf
 ```
 

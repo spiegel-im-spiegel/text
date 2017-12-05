@@ -28,3 +28,19 @@ func TestGetEncoding(t *testing.T) {
 		}
 	}
 }
+
+func TestAvailableEncodingList(t *testing.T) {
+	str := AvailableEncodingList()
+	ref := "big5 eucjp euckr gb18030 jis sjis utf8"
+	if str != ref {
+		t.Errorf("AvailableEncodingList()  = \"%v\", want \"%v\".", str, ref)
+	}
+}
+
+func TestAvailableNewlineOptionsList(t *testing.T) {
+	str := AvailableNewlineOptionsList()
+	ref := "lf cr crlf"
+	if str != ref {
+		t.Errorf("AvailableNewlineOptionsList()  = \"%v\", want \"%v\".", str, ref)
+	}
+}
