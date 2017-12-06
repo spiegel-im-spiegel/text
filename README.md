@@ -90,6 +90,8 @@ fmt.Println(buf)
 
 See [latest release](https://github.com/spiegel-im-spiegel/text/releases/latest).
 
+### Usage
+
 ```
 $ gonkf -h
 Usage:

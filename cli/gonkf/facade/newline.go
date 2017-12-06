@@ -4,23 +4,32 @@ import (
 	"io"
 	"os"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+	"github.com/spiegel-im-spiegel/text"
 	"github.com/spiegel-im-spiegel/text/cli/gonkf/list"
-	"github.com/spiegel-im-spiegel/text/cli/gonkf/norm"
-	"github.com/spiegel-im-spiegel/text/normalize"
+	"github.com/spiegel-im-spiegel/text/cli/gonkf/nwline"
+	"github.com/spiegel-im-spiegel/text/newline"
 )
 
-// normCmd represents the conv command
-var normCmd = &cobra.Command{
-	Use:   "norm [flags] [text file]",
-	Short: "Unicode normalization",
-	Long:  "Unicode normalization (UTF-8 text only)",
+// nwlineCmd represents the conv command
+var nwlineCmd = &cobra.Command{
+	Use:   "nwline [flags] [text file]",
+	Short: "Convert newline of text",
+	Long:  "Convert newline of text",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		form := newline.LF
 		str, err := cmd.Flags().GetString("form")
 		if err != nil {
 			return err
 		}
-		form := normalize.FormofNormalize(str)
+		if len(str) > 0 {
+			nl := newline.TypeofNewline(str)
+			if nl == newline.Unknown {
+				return errors.Wrapf(text.ErrNoImplement, "error form %s", str)
+			}
+			form = nl
+		}
 		outPath, err := cmd.Flags().GetString("output")
 		if err != nil {
 			return err
@@ -35,7 +44,7 @@ var normCmd = &cobra.Command{
 			defer file.Close()
 			reader = file
 		}
-		dst, err := norm.Run(reader, form)
+		dst, err := nwline.Run(reader, form)
 		if err != nil {
 			return err
 		}
@@ -55,8 +64,8 @@ var normCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(normCmd)
+	rootCmd.AddCommand(nwlineCmd)
 
-	normCmd.Flags().StringP("form", "f", "nfc", "normalization form ["+list.NormOptionsList("|")+"]")
-	normCmd.Flags().StringP("output", "o", "", "output file path")
+	nwlineCmd.Flags().StringP("form", "f", "lf", "newline form ["+list.AvailableNewlineOptionsList("|")+"]")
+	nwlineCmd.Flags().StringP("output", "o", "", "output file path")
 }

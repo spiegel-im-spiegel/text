@@ -10,7 +10,6 @@ import (
 	"github.com/spiegel-im-spiegel/text/cli/gonkf/conv"
 	"github.com/spiegel-im-spiegel/text/cli/gonkf/list"
 	"github.com/spiegel-im-spiegel/text/detect"
-	"github.com/spiegel-im-spiegel/text/newline"
 )
 
 // convCmd represents the conv command
@@ -41,17 +40,6 @@ var convCmd = &cobra.Command{
 				return errors.Wrapf(text.ErrNoImplement, "error character encoding %s", str)
 			}
 			opt.SetDstEncoding(e)
-		}
-		str, err = cmd.Flags().GetString("newline")
-		if err != nil {
-			return err
-		}
-		if len(str) > 0 {
-			nl := newline.TypeofNewline(str)
-			if nl == newline.Unknown {
-				return errors.Wrapf(text.ErrNoImplement, "error type of newline %s", str)
-			}
-			opt.SetNewline(nl)
 		}
 		outPath, err := cmd.Flags().GetString("output")
 		if err != nil {
@@ -89,8 +77,7 @@ var convCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(convCmd)
 
-	convCmd.Flags().StringP("src-encoding", "s", "", "character encoding of source text")
-	convCmd.Flags().StringP("dst-encoding", "d", "", "character encoding of destination text")
-	convCmd.Flags().StringP("newline", "n", "", "type of newline")
+	convCmd.Flags().StringP("src-encoding", "s", "", "encoding of src ["+list.AvailableEncodingList("|")+"]")
+	convCmd.Flags().StringP("dst-encoding", "d", "utf8", "encoding of dest ["+list.AvailableEncodingList("|")+"]")
 	convCmd.Flags().StringP("output", "o", "", "output file path")
 }
