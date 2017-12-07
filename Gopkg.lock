@@ -33,9 +33,9 @@
 
 [[projects]]
   name = "github.com/spiegel-im-spiegel/gocli"
-  packages = ["."]
-  revision = "d80ff117c2cb7e41be5605ede6291c43d7b2e397"
-  version = "v0.4.4"
+  packages = ["exitcode","rwi"]
+  revision = "f83c57ec2f52e7a75f17a16bd49300e331c3ec38"
+  version = "v0.5.0"
 
 [[projects]]
   branch = "master"
@@ -46,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "da80435a2f66630250955e5ae7e0b6220ce21296b1a7a2cd13838b39847f97b7"
+  inputs-digest = "64c4bd3856a3785de38d765bff6d095c115572600c8f07d636c08e1a1bc6b154"
   solver-name = "gps-cdcl"
   solver-version = 1

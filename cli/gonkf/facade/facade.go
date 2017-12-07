@@ -5,7 +5,8 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"github.com/spiegel-im-spiegel/gocli"
+	"github.com/spiegel-im-spiegel/gocli/exitcode"
+	"github.com/spiegel-im-spiegel/gocli/rwi"
 )
 
 var (
@@ -16,20 +17,34 @@ var (
 )
 
 var (
-	cui = gocli.NewUI() //CUI instance
+	cui = rwi.New() //CUI instance
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use: Name,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return errors.New("no command")
-	},
+//newRootCmd returns cobra.Command instance for root command
+func newRootCmd(ui *rwi.RWI, args []string) *cobra.Command {
+	cui = ui
+	rootCmd := &cobra.Command{
+		Use: Name,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return errors.New("no command")
+		},
+	}
+
+	rootCmd.AddCommand(
+		newConvCmd(),
+		newGuessCmd(),
+		newNwlineCmd(),
+		newNormCmd(),
+		newVersionCmd(),
+	)
+	rootCmd.SetArgs(args)
+	rootCmd.SetOutput(ui.ErrorWriter())
+
+	return rootCmd
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute(ui *gocli.UI, args []string) (exit ExitCode) {
+//Execute is called from main function
+func Execute(ui *rwi.RWI, args []string) (exit exitcode.ExitCode) {
 	defer func() {
 		//panic hundling
 		if r := recover(); r != nil {
@@ -41,20 +56,14 @@ func Execute(ui *gocli.UI, args []string) (exit ExitCode) {
 				}
 				cui.OutputErrln(" ->", depth, ":", runtime.FuncForPC(pc).Name(), ":", src, ":", line)
 			}
-			exit = ExitAbnormal
+			exit = exitcode.Abnormal
 		}
 	}()
 
 	//execution
-	cui = ui
-	rootCmd.SetArgs(args)
-	rootCmd.SetOutput(ui.ErrorWriter())
-	exit = ExitNormal
-	if err := rootCmd.Execute(); err != nil {
-		exit = ExitAbnormal
+	exit = exitcode.Normal
+	if err := newRootCmd(ui, args).Execute(); err != nil {
+		exit = exitcode.Abnormal
 	}
 	return
-}
-
-func init() {
 }
