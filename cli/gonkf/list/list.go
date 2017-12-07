@@ -7,6 +7,7 @@ import (
 	"github.com/spiegel-im-spiegel/text/detect"
 	"github.com/spiegel-im-spiegel/text/newline"
 	"github.com/spiegel-im-spiegel/text/normalize"
+	"github.com/spiegel-im-spiegel/text/width"
 )
 
 var encodingMap = map[string]detect.CharEncoding{
@@ -64,4 +65,15 @@ var normNames = []string{
 //NormOptionsList return normalization form list
 func NormOptionsList(sep string) string {
 	return strings.Join(normNames, sep)
+}
+
+var widthNames = []string{
+	width.Fold.String(),
+	width.Narrow.String(),
+	width.Widen.String(),
+}
+
+//WidthOptionsList return normalization form list
+func WidthOptionsList(sep string) string {
+	return strings.Join(widthNames, sep)
 }

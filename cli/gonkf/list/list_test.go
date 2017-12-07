@@ -57,3 +57,11 @@ func TestNormOptionsList(t *testing.T) {
 		t.Errorf("NormOptionsList()  = \"%v\", want \"%v\".", str, ref)
 	}
 }
+
+func TestWidthOptionsList(t *testing.T) {
+	str := WidthOptionsList("|")
+	ref := "fold|narrow|widen"
+	if str != ref {
+		t.Errorf("WidthOptionsList()  = \"%v\", want \"%v\".", str, ref)
+	}
+}

@@ -38,6 +38,7 @@ func newRootCmd(ui *rwi.RWI, args []string) *cobra.Command {
 		newNwlineCmd(),
 		newNormCmd(),
 		newVersionCmd(),
+		newWidthCmd(),
 	)
 	rootCmd.SetArgs(args)
 	rootCmd.SetOutput(ui.ErrorWriter())
