@@ -19,14 +19,10 @@ func newNwlineCmd() *cobra.Command {
 		Short: "Convert newline of text",
 		Long:  "Convert newline of text",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			form := newline.LF
 			str, _ := cmd.Flags().GetString("form")
-			if len(str) > 0 {
-				nl := newline.TypeofNewline(str)
-				if nl == newline.Unknown {
-					return errors.Wrapf(text.ErrNoImplement, "error form %s", str)
-				}
-				form = nl
+			form := newline.TypeofNewline(str)
+			if form == newline.Unknown {
+				return errors.Wrapf(text.ErrNoImplement, "error form %s", str)
 			}
 			outPath, _ := cmd.Flags().GetString("output")
 
