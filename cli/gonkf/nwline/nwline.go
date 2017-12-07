@@ -7,9 +7,9 @@ import (
 )
 
 //Run return converted text
-func Run(txt io.Reader, form newline.Option) (io.Reader, error) {
+func Run(txt io.Reader, form newline.Option) io.Reader {
 	if form != newline.Unknown {
-		return newline.Convert(txt, form), nil
+		return newline.Convert(txt, form)
 	}
-	return txt, nil
+	return txt
 }

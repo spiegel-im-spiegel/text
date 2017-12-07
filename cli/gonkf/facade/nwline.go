@@ -20,10 +20,7 @@ func newNwlineCmd() *cobra.Command {
 		Long:  "Convert newline of text",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			form := newline.LF
-			str, err := cmd.Flags().GetString("form")
-			if err != nil {
-				return err
-			}
+			str, _ := cmd.Flags().GetString("form")
 			if len(str) > 0 {
 				nl := newline.TypeofNewline(str)
 				if nl == newline.Unknown {
@@ -31,24 +28,18 @@ func newNwlineCmd() *cobra.Command {
 				}
 				form = nl
 			}
-			outPath, err := cmd.Flags().GetString("output")
-			if err != nil {
-				return err
-			}
+			outPath, _ := cmd.Flags().GetString("output")
 
 			reader := cui.Reader()
 			if len(args) > 0 {
-				file, err2 := os.Open(args[0]) //args[0] is maybe file path
+				file, err := os.OpenFile(args[0], os.O_RDONLY, 0400) //args[0] is maybe file path
 				if err != nil {
-					return err2
+					return err
 				}
 				defer file.Close()
 				reader = file
 			}
-			dst, err := nwline.Run(reader, form)
-			if err != nil {
-				return err
-			}
+			dst := nwline.Run(reader, form)
 
 			if len(outPath) > 0 {
 				file, err := os.OpenFile(outPath, os.O_WRONLY|os.O_CREATE, 0666)

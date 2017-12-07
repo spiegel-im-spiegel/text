@@ -20,10 +20,7 @@ func newConvCmd() *cobra.Command {
 		Long:  "Convert character encoding of text",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt := &conv.Options{}
-			str, err := cmd.Flags().GetString("src-encoding")
-			if err != nil {
-				return err
-			}
+			str, _ := cmd.Flags().GetString("src-encoding")
 			if len(str) > 0 {
 				e := list.TypeofEncoding(str)
 				if e == detect.Unknown {
@@ -31,10 +28,7 @@ func newConvCmd() *cobra.Command {
 				}
 				opt.SetSrcEncoding(e)
 			}
-			str, err = cmd.Flags().GetString("dst-encoding")
-			if err != nil {
-				return err
-			}
+			str, _ = cmd.Flags().GetString("dst-encoding")
 			if len(str) > 0 {
 				e := list.TypeofEncoding(str)
 				if e == detect.Unknown {
@@ -42,16 +36,13 @@ func newConvCmd() *cobra.Command {
 				}
 				opt.SetDstEncoding(e)
 			}
-			outPath, err := cmd.Flags().GetString("output")
-			if err != nil {
-				return err
-			}
+			outPath, _ := cmd.Flags().GetString("output")
 
 			reader := cui.Reader()
 			if len(args) > 0 {
-				file, err2 := os.Open(args[0]) //args[0] is maybe file path
+				file, err := os.OpenFile(args[0], os.O_RDONLY, 0400) //args[0] is maybe file path
 				if err != nil {
-					return err2
+					return err
 				}
 				defer file.Close()
 				reader = file

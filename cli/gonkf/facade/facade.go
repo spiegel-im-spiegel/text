@@ -24,7 +24,9 @@ var (
 func newRootCmd(ui *rwi.RWI, args []string) *cobra.Command {
 	cui = ui
 	rootCmd := &cobra.Command{
-		Use: Name,
+		Use:   Name,
+		Short: "Network Kanji Filter by Golang",
+		Long:  "Network Kanji Filter by Golang",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return errors.New("no command")
 		},
