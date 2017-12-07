@@ -7,16 +7,17 @@ import (
 	"github.com/spiegel-im-spiegel/text/detect"
 	"github.com/spiegel-im-spiegel/text/newline"
 	"github.com/spiegel-im-spiegel/text/normalize"
+	"github.com/spiegel-im-spiegel/text/width"
 )
 
 var encodingMap = map[string]detect.CharEncoding{
-	"utf8":    detect.UTF8,
-	"sjis":    detect.ShiftJIS,
-	"eucjp":   detect.EUCJP,
-	"jis":     detect.ISO2022JP,
-	"euckr":   detect.EUCKR,
-	"gb18030": detect.GB18030,
-	"big5":    detect.Big5,
+	"utf8": detect.UTF8,
+	"sjis": detect.ShiftJIS,
+	"euc":  detect.EUCJP,
+	"jis":  detect.ISO2022JP,
+	//"euckr":   detect.EUCKR,
+	//"gb18030": detect.GB18030,
+	//"big5":    detect.Big5,
 }
 
 //TypeofEncoding returns character encoding from string
@@ -24,17 +25,22 @@ func TypeofEncoding(s string) detect.CharEncoding {
 	if e, ok := encodingMap[strings.ToLower(s)]; ok {
 		return e
 	}
+	for _, e := range encodingMap {
+		if strings.ToLower(s) == strings.ToLower(e.String()) {
+			return e
+		}
+	}
 	return detect.Unknown
 }
 
 //AvailableEncodingList return available character encoding list
-func AvailableEncodingList() string {
+func AvailableEncodingList(sep string) string {
 	var names []string
 	for key := range encodingMap {
 		names = append(names, key)
 	}
 	sort.Strings(names)
-	return strings.Join(names, " ")
+	return strings.Join(names, sep)
 
 }
 
@@ -45,8 +51,8 @@ var newlineNames = []string{
 }
 
 //AvailableNewlineOptionsList return available newline options list
-func AvailableNewlineOptionsList() string {
-	return strings.Join(newlineNames, " ")
+func AvailableNewlineOptionsList(sep string) string {
+	return strings.Join(newlineNames, sep)
 }
 
 var normNames = []string{
@@ -57,6 +63,17 @@ var normNames = []string{
 }
 
 //NormOptionsList return normalization form list
-func NormOptionsList() string {
-	return strings.Join(normNames, " ")
+func NormOptionsList(sep string) string {
+	return strings.Join(normNames, sep)
+}
+
+var widthNames = []string{
+	width.Fold.String(),
+	width.Narrow.String(),
+	width.Widen.String(),
+}
+
+//WidthOptionsList return normalization form list
+func WidthOptionsList(sep string) string {
+	return strings.Join(widthNames, sep)
 }

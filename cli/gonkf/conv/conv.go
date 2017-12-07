@@ -8,22 +8,10 @@ import (
 	"github.com/spiegel-im-spiegel/text/decode"
 	"github.com/spiegel-im-spiegel/text/detect"
 	"github.com/spiegel-im-spiegel/text/encode"
-	"github.com/spiegel-im-spiegel/text/newline"
 )
 
 //Run return converted text
 func Run(txt io.Reader, opt *Options) (io.Reader, error) {
-	ctxt, err := runConvert(txt, opt)
-	if err != nil {
-		return ctxt, err
-	}
-	if opt.Newline() != newline.Unknown {
-		return newline.Convert(ctxt, opt.Newline()), nil
-	}
-	return ctxt, err
-}
-
-func runConvert(txt io.Reader, opt *Options) (io.Reader, error) {
 	if opt.SrcEncoding() == opt.DstEncoding() {
 		return txt, nil
 	}

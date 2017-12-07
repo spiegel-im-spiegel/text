@@ -73,6 +73,20 @@ fmt.Println(buf)
 // こんにちは世界
 ```
 
+### newline
+
+```go
+res := newline.Do(bytes.NewBufferString("こんにちは\nこんにちは\rこんにちは\r\nこんにちは"), newline.LF)
+buf := new(bytes.Buffer)
+io.Copy(buf, res)
+fmt.Println(buf)
+// Output:
+// こんにちは
+// こんにちは
+// こんにちは
+// こんにちは
+```
+
 ### normalize
 
 ```go
@@ -84,14 +98,29 @@ fmt.Println(buf)
 // ペンギン
 ```
 
+### width
+
+```go
+res := width.Do(bytes.NewBufferString("１２３４５６７８９０ｱｲｳｴｵｶｷｸｹｺＡＢＣＤＥＦＧＨＩＪＫ"), width.Fold)
+buf := new(bytes.Buffer)
+io.Copy(buf, res)
+fmt.Println(buf)
+// Output:
+// 1234567890アイウエオカキクケコABCDEFGHIJK
+```
+
 ## Command Line Interface
 
 ### Binaries
 
 See [latest release](https://github.com/spiegel-im-spiegel/text/releases/latest).
 
+### Usage
+
 ```
 $ gonkf -h
+Network Kanji Filter by Golang
+
 Usage:
   gonkf [flags]
   gonkf [command]
@@ -100,9 +129,10 @@ Available Commands:
   conv        Convert character encoding of text
   guess       Guess character encoding of text
   help        Help about any command
-  list        List of available character encoding
   norm        Unicode normalization
+  nwline      Convert newline of text
   version     Print the version number of gonkf
+  width       Convert character width of text
 
 Flags:
   -h, --help   help for gonkf
@@ -136,11 +166,10 @@ Usage:
   gonkf conv [flags] [text file]
 
 Flags:
-  -d, --dst-encoding string   character encoding of destination text
+  -d, --dst-encoding string   encoding of dest [euc|jis|sjis|utf8] (default "utf8")
   -h, --help                  help for conv
-  -n, --newline string        type of newline
   -o, --output string         output file path
-  -s, --src-encoding string   character encoding of source text
+  -s, --src-encoding string   encoding of src [euc|jis|sjis|utf8]
 
 $ gonkf conv -d utf8 testdata/SHIFT_JIS.txt
 こんにちは。世界の国から。
@@ -150,13 +179,13 @@ $ gonkf conv -d utf8 testdata/SHIFT_JIS.txt
 
 ```
 $ gonkf norm -h
-Unicode normalization
+Unicode normalization (UTF-8 text only)
 
 Usage:
   gonkf norm [flags] [text file]
 
 Flags:
-  -f, --form string     normalization form (default "nfc")
+  -f, --form string     normalization form [nfc|nfd|nfkc|nfkd] (default "nfc")
   -h, --help            help for norm
   -o, --output string   output file path
 
@@ -164,22 +193,22 @@ $ echo ﾍﾟﾝｷﾞﾝ | gonkf norm -f NFKC
 ペンギン
 ```
 
-### list sub-command
+### width sub-command
 
 ```
-$ gonkf list -h
-List of available character encoding
+$ gonkf width -h
+Convert character width of text (UTF-8 text only)
 
 Usage:
-  gonkf list [flags]
+  gonkf width [flags] [text file]
 
 Flags:
-  -h, --help   help for list
+  -f, --form string     form of width [fold|narrow|widen] (default "fold")
+  -h, --help            help for width
+  -o, --output string   output file path
 
-$ gonkf list
-available encoding: big5 eucjp euckr gb18030 jis sjis utf8
-   type of newline: lf cr crlf
-normalization form: nfc nfd nfkc nfkd
+$ echo １２３４５６７８９０ｱｲｳｴｵｶｷｸｹｺＡＢＣＤＥＦＧＨＩＪＫ | gonkf width -f fold
+1234567890アイウエオカキクケコABCDEFGHIJK
 ```
 
 ## Dependencies

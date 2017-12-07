@@ -4,24 +4,25 @@ import (
 	"io"
 	"os"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spiegel-im-spiegel/text"
 	"github.com/spiegel-im-spiegel/text/cli/gonkf/list"
-	"github.com/spiegel-im-spiegel/text/cli/gonkf/norm"
-	"github.com/spiegel-im-spiegel/text/normalize"
+	"github.com/spiegel-im-spiegel/text/cli/gonkf/wdth"
+	"github.com/spiegel-im-spiegel/text/width"
 )
 
-//newNormCmd returns cobra.Command instance for norm sub-command
-func newNormCmd() *cobra.Command {
-	normCmd := &cobra.Command{
-		Use:   "norm [flags] [text file]",
-		Short: "Unicode normalization",
-		Long:  "Unicode normalization (UTF-8 text only)",
+//newWidthCmd returns cobra.Command instance for width sub-command
+func newWidthCmd() *cobra.Command {
+	widthCmd := &cobra.Command{
+		Use:   "width [flags] [text file]",
+		Short: "Convert character width of text",
+		Long:  "Convert character width of text (UTF-8 text only)",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			str, _ := cmd.Flags().GetString("form")
-			form := normalize.FormofNormalize(str)
-			if form == normalize.Unknown {
-				return text.ErrNoImplement
+			form := width.FormofWidth(str)
+			if form == width.Unknown {
+				return errors.Wrapf(text.ErrNoImplement, "error form %s", str)
 			}
 			outPath, _ := cmd.Flags().GetString("output")
 
@@ -34,7 +35,7 @@ func newNormCmd() *cobra.Command {
 				defer file.Close()
 				reader = file
 			}
-			dst := norm.Run(reader, form)
+			dst := wdth.Run(reader, form)
 
 			if len(outPath) > 0 {
 				file, err := os.OpenFile(outPath, os.O_WRONLY|os.O_CREATE, 0666)
@@ -50,8 +51,8 @@ func newNormCmd() *cobra.Command {
 		},
 	}
 
-	normCmd.Flags().StringP("form", "f", "nfc", "normalization form ["+list.NormOptionsList("|")+"]")
-	normCmd.Flags().StringP("output", "o", "", "output file path")
+	widthCmd.Flags().StringP("form", "f", "fold", "form of width ["+list.WidthOptionsList("|")+"]")
+	widthCmd.Flags().StringP("output", "o", "", "output file path")
 
-	return normCmd
+	return widthCmd
 }

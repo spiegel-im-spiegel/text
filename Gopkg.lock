@@ -33,19 +33,19 @@
 
 [[projects]]
   name = "github.com/spiegel-im-spiegel/gocli"
-  packages = ["."]
-  revision = "d80ff117c2cb7e41be5605ede6291c43d7b2e397"
-  version = "v0.4.4"
+  packages = ["exitcode","rwi"]
+  revision = "f83c57ec2f52e7a75f17a16bd49300e331c3ec38"
+  version = "v0.5.0"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/text"
-  packages = ["encoding","encoding/charmap","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","encoding/unicode","internal/gen","internal/triegen","internal/ucd","internal/utf8internal","runes","transform","unicode/cldr","unicode/norm"]
+  packages = ["encoding","encoding/charmap","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","encoding/unicode","internal/gen","internal/triegen","internal/ucd","internal/utf8internal","runes","transform","unicode/cldr","unicode/norm","width"]
   revision = "556d234e9c5239918de4d1fe247d1fe004e71764"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "da80435a2f66630250955e5ae7e0b6220ce21296b1a7a2cd13838b39847f97b7"
+  inputs-digest = "aa286aad74abdcff146febafb6800670622dbe5cb9d2cfab8c1f4df63421af10"
   solver-name = "gps-cdcl"
   solver-version = 1
