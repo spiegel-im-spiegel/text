@@ -20,7 +20,7 @@ func TestWidth(t *testing.T) {
 	}
 
 	for _, tst := range testCase {
-		res := Do(bytes.NewBufferString(tst.txt), tst.opt)
+		res := Reader(bytes.NewBufferString(tst.txt), tst.opt)
 		buf := new(bytes.Buffer)
 		io.Copy(buf, res)
 		if buf.String() != tst.res {
@@ -29,8 +29,8 @@ func TestWidth(t *testing.T) {
 	}
 }
 
-func ExampleDo() {
-	res := Do(bytes.NewBufferString("abｦ￦￮￥Ａ"), Fold)
+func ExampleReader() {
+	res := Reader(bytes.NewBufferString("abｦ￦￮￥Ａ"), Fold)
 	buf := new(bytes.Buffer)
 	io.Copy(buf, res)
 	fmt.Println(buf)

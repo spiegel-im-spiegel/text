@@ -19,7 +19,7 @@ func TestConvert(t *testing.T) {
 	}
 
 	for _, tst := range testCase {
-		res := Convert(bytes.NewBufferString(tst.txt), tst.nl)
+		res := Reader(bytes.NewBufferString(tst.txt), tst.nl)
 		buf := new(bytes.Buffer)
 		io.Copy(buf, res)
 		if buf.String() != tst.res {

@@ -8,8 +8,8 @@ import (
 
 var regxNewline = regexp.MustCompile(`\r\n|\r|\n`)
 
-//Convert returns converted text
-func Convert(txt io.Reader, opt Option) io.Reader {
+//Reader returns converted text Reader
+func Reader(txt io.Reader, opt Option) io.Reader {
 	rep := []byte{}
 	switch opt {
 	case LF:
@@ -23,6 +23,5 @@ func Convert(txt io.Reader, opt Option) io.Reader {
 	}
 	buf := new(bytes.Buffer)
 	io.Copy(buf, txt)
-	dst := regxNewline.Copy().ReplaceAll(buf.Bytes(), rep)
-	return bytes.NewReader(dst)
+	return bytes.NewReader(regxNewline.Copy().ReplaceAll(buf.Bytes(), rep))
 }
