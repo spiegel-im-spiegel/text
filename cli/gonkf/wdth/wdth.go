@@ -11,5 +11,5 @@ func Run(txt io.Reader, form width.Option) io.Reader {
 	if form == width.Unknown {
 		return txt
 	}
-	return width.Do(txt, form)
+	return width.Reader(txt, form)
 }

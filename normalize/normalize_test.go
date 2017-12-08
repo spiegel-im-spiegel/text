@@ -21,7 +21,7 @@ func TestDo(t *testing.T) {
 	}
 
 	for _, tst := range testCase {
-		res := Do(bytes.NewBufferString(tst.txt), tst.opt)
+		res := Reader(bytes.NewBufferString(tst.txt), tst.opt)
 		buf := new(bytes.Buffer)
 		io.Copy(buf, res)
 		if buf.String() != tst.res {
@@ -31,7 +31,7 @@ func TestDo(t *testing.T) {
 }
 
 func ExampleDo() {
-	res := Do(bytes.NewBufferString("ﾍﾟﾝｷﾞﾝ"), NFKC)
+	res := Reader(bytes.NewBufferString("ﾍﾟﾝｷﾞﾝ"), NFKC)
 	buf := new(bytes.Buffer)
 	io.Copy(buf, res)
 	fmt.Println(buf)

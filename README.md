@@ -76,7 +76,7 @@ fmt.Println(buf)
 ### newline
 
 ```go
-res := newline.Do(bytes.NewBufferString("こんにちは\nこんにちは\rこんにちは\r\nこんにちは"), newline.LF)
+res := newline.Reader(bytes.NewBufferString("こんにちは\nこんにちは\rこんにちは\r\nこんにちは"), newline.LF)
 buf := new(bytes.Buffer)
 io.Copy(buf, res)
 fmt.Println(buf)
@@ -90,7 +90,7 @@ fmt.Println(buf)
 ### normalize
 
 ```go
-res := normalize.Do(bytes.NewBufferString("ﾍﾟﾝｷﾞﾝ"), normalize.NFKC)
+res := normalize.Reader(bytes.NewBufferString("ﾍﾟﾝｷﾞﾝ"), normalize.NFKC)
 buf := new(bytes.Buffer)
 io.Copy(buf, res)
 fmt.Println(buf)
@@ -101,7 +101,7 @@ fmt.Println(buf)
 ### width
 
 ```go
-res := width.Do(bytes.NewBufferString("１２３４５６７８９０ｱｲｳｴｵｶｷｸｹｺＡＢＣＤＥＦＧＨＩＪＫ"), width.Fold)
+res := width.Reader(bytes.NewBufferString("１２３４５６７８９０ｱｲｳｴｵｶｷｸｹｺＡＢＣＤＥＦＧＨＩＪＫ"), width.Fold)
 buf := new(bytes.Buffer)
 io.Copy(buf, res)
 fmt.Println(buf)

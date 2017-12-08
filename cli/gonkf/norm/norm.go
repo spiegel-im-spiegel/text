@@ -8,5 +8,5 @@ import (
 
 //Run returns normalized text
 func Run(txt io.Reader, form normalize.Option) io.Reader {
-	return normalize.Do(txt, form)
+	return normalize.Reader(txt, form)
 }
