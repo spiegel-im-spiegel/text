@@ -22,12 +22,26 @@ var newlineMap = map[string]Option{
 	"crlf": CRLF,
 }
 
+var newlineCodeMap = map[Option]string{
+	LF:   "\n",
+	CR:   "\r",
+	CRLF: "\r\n",
+}
+
 //TypeofNewline returns type of newline
 func TypeofNewline(s string) Option {
 	if e, ok := newlineMap[strings.ToLower(s)]; ok {
 		return e
 	}
 	return Unknown
+}
+
+//Code returns character code
+func (nl Option) Code() string {
+	if c, ok := newlineCodeMap[nl]; ok {
+		return c
+	}
+	return ""
 }
 
 func (nl Option) String() string {

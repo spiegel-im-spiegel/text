@@ -3,25 +3,33 @@ package newline
 import (
 	"bytes"
 	"io"
-	"regexp"
+	"strings"
 )
-
-var regxNewline = regexp.MustCompile(`\r\n|\r|\n`)
 
 //Reader returns converted text Reader
 func Reader(txt io.Reader, opt Option) io.Reader {
-	rep := []byte{}
-	switch opt {
-	case LF:
-		rep = []byte("\n")
-	case CR:
-		rep = []byte("\r")
-	case CRLF:
-		rep = []byte("\r\n")
-	default:
+	if opt == Unknown {
 		return txt
 	}
+	str := new(bytes.Buffer)
 	buf := new(bytes.Buffer)
-	io.Copy(buf, txt)
-	return bytes.NewReader(regxNewline.Copy().ReplaceAll(buf.Bytes(), rep))
+	io.Copy(str, txt)
+	strings.NewReplacer(
+		CRLF.Code(), opt.Code(),
+		LF.Code(), opt.Code(),
+		CR.Code(), opt.Code(),
+	).WriteString(buf, str.String())
+	return buf
+}
+
+//String returns converted text string
+func String(txt string, opt Option) string {
+	if opt == Unknown {
+		return txt
+	}
+	return strings.NewReplacer(
+		CRLF.Code(), opt.Code(),
+		LF.Code(), opt.Code(),
+		CR.Code(), opt.Code(),
+	).Replace(txt)
 }
