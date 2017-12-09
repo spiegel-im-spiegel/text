@@ -87,6 +87,16 @@ fmt.Println(buf)
 // こんにちは
 ```
 
+```go
+res := newline.String("こんにちは\nこんにちは\rこんにちは\r\nこんにちは", newline.LF)
+fmt.Println(res)
+// Output:
+// こんにちは
+// こんにちは
+// こんにちは
+// こんにちは
+```
+
 ### normalize
 
 ```go
@@ -98,6 +108,13 @@ fmt.Println(buf)
 // ペンギン
 ```
 
+```go
+res := normalize.String("ﾍﾟﾝｷﾞﾝ", normalize.NFKC)
+fmt.Println(res)
+// Output:
+// ペンギン
+```
+
 ### width
 
 ```go
@@ -105,6 +122,13 @@ res := width.Reader(bytes.NewBufferString("１２３４５６７８９０ｱｲ�
 buf := new(bytes.Buffer)
 io.Copy(buf, res)
 fmt.Println(buf)
+// Output:
+// 1234567890アイウエオカキクケコABCDEFGHIJK
+```
+
+```go
+res := width.String("１２３４５６７８９０ｱｲｳｴｵｶｷｸｹｺＡＢＣＤＥＦＧＨＩＪＫ", width.Fold)
+fmt.Printlnres)
 // Output:
 // 1234567890アイウエオカキクケコABCDEFGHIJK
 ```
