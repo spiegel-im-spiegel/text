@@ -3,7 +3,6 @@ package width
 import (
 	"strings"
 
-	"golang.org/x/text/transform"
 	wdth "golang.org/x/text/width"
 )
 
@@ -27,7 +26,7 @@ var widthNameMap = map[string]Option{
 	"widen":  Widen,
 }
 
-var widthMap = map[Option]transform.Transformer{
+var widthMap = map[Option]wdth.Transformer{
 	Fold:   wdth.Fold,
 	Narrow: wdth.Narrow,
 	Widen:  wdth.Widen,
@@ -51,9 +50,9 @@ func (w Option) String() string {
 }
 
 //GetForm returns transform.Transformer instance
-func (w Option) GetForm() transform.Transformer {
+func (w Option) GetForm() *wdth.Transformer {
 	if f, ok := widthMap[w]; ok {
-		return f
+		return &f
 	}
 	return nil
 
