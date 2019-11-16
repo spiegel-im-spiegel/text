@@ -2,8 +2,6 @@ package encode
 
 import (
 	"bytes"
-	"fmt"
-	"io"
 	"testing"
 
 	"github.com/spiegel-im-spiegel/text/detect"
@@ -25,26 +23,37 @@ func TestFromUTF8To(t *testing.T) {
 	for _, tst := range testCase {
 		res, err := FromUTF8To(tst.e, bytes.NewReader(tst.txt))
 		if err != nil {
-			t.Errorf("ToUTF8ja(%v)  = \"%v\", want nil.", tst.txt, err)
+			t.Errorf("ToUTF8ja(%v) is \"%v\", want nil.", tst.txt, err)
 		}
-		buf := new(bytes.Buffer)
-		io.Copy(buf, res)
-		if bytes.Compare(buf.Bytes(), tst.res) != 0 {
+		buf := &bytes.Buffer{}
+		if _, err := buf.ReadFrom(res); err != nil {
+			t.Errorf("ToUTF8ja(%v) is \"%v\", want nil.", tst.txt, err)
+		}
+		if !bytes.Equal(buf.Bytes(), tst.res) {
 			t.Errorf("ToUTF8ja(%v)  = \"%v\", want \"%v\".", tst.txt, buf, tst.res)
 		}
 	}
 }
 
-func ExampleFromUTF8To() {
-	utf8Text := "こんにちは，世界\n"
-	res, err := FromUTF8To(detect.ISO2022JP, bytes.NewBufferString(utf8Text))
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	buf := new(bytes.Buffer)
-	io.Copy(buf, res)
-	fmt.Println(buf.Bytes())
-	// Output:
-	// [27 36 66 36 51 36 115 36 75 36 65 36 79 33 36 64 36 51 38 27 40 66 10]
-}
+/* MIT License
+ *
+ * Copyright 2017-2019 Spiegel
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */

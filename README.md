@@ -1,20 +1,20 @@
 # [text] - Encoding/Decoding Text Package by [Golang]
 
 [![Build Status](https://travis-ci.org/spiegel-im-spiegel/text.svg?branch=master)](https://travis-ci.org/spiegel-im-spiegel/text)
+[![GitHub license](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/spiegel-im-spiegel/text/master/LICENSE)
+[![GitHub release](http://img.shields.io/github/release/spiegel-im-spiegel/mt.svg)](https://github.com/spiegel-im-spiegel/text/releases/latest)
 
-## Install
+## Declare [text] module
 
+See [go.mod](https://github.com/spiegel-im-spiegel/gpgpdump/blob/master/go.mod) file. 
+
+## Usage of package
+
+### Import Package
+
+```go
+import "github.com/spiegel-im-spiegel/openbd-api"
 ```
-$ go get github.com/spiegel-im-spiegel/text
-```
-
-Installing by [dep].
-
-```
-$ dep ensure -add github.com/spiegel-im-spiegel/text
-```
-
-## Usage
 
 ### detect
 
@@ -76,7 +76,7 @@ fmt.Println(buf)
 ### newline
 
 ```go
-res := newline.Reader(bytes.NewBufferString("こんにちは\nこんにちは\rこんにちは\r\nこんにちは"), newline.LF)
+res := newline.Reader(strings.NewReader("こんにちは\nこんにちは\rこんにちは\r\nこんにちは"), newline.LF)
 buf := new(bytes.Buffer)
 io.Copy(buf, res)
 fmt.Println(buf)
@@ -100,7 +100,7 @@ fmt.Println(res)
 ### normalize
 
 ```go
-res := normalize.Reader(bytes.NewBufferString("ﾍﾟﾝｷﾞﾝ"), normalize.NFKC)
+res := normalize.Reader(strings.NewReader("ﾍﾟﾝｷﾞﾝ"), normalize.NFKC)
 buf := new(bytes.Buffer)
 io.Copy(buf, res)
 fmt.Println(buf)
@@ -118,7 +118,7 @@ fmt.Println(res)
 ### width
 
 ```go
-res := width.Reader(bytes.NewBufferString("１２３４５６７８９０ｱｲｳｴｵｶｷｸｹｺＡＢＣＤＥＦＧＨＩＪＫ"), width.Fold)
+res := width.Reader(strings.NewReader("１２３４５６７８９０ｱｲｳｴｵｶｷｸｹｺＡＢＣＤＥＦＧＨＩＪＫ"), width.Fold)
 buf := new(bytes.Buffer)
 io.Copy(buf, res)
 fmt.Println(buf)
@@ -235,14 +235,5 @@ $ echo １２３４５６７８９０ｱｲｳｴｵｶｷｸｹｺＡＢＣＤ�
 1234567890アイウエオカキクケコABCDEFGHIJK
 ```
 
-## Dependencies
-
-```
-$ dep status -dot | dot -Tpng -o dependency.png
-```
-
-[![Dependencies](dependency.png)](dependency.png)
-
 [text]: https://github.com/spiegel-im-spiegel/text "spiegel-im-spiegel/text: Encoding/Decoding Text Package by Golang"
 [Golang]: https://golang.org/ "The Go Programming Language"
-[dep]: https://github.com/golang/dep "golang/dep: Go dependency management tool"

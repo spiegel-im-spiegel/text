@@ -1,40 +1,28 @@
-package facade
+package convert_test
 
 import (
 	"bytes"
-	"testing"
+	"fmt"
 
-	"github.com/spiegel-im-spiegel/gocli/exitcode"
-	"github.com/spiegel-im-spiegel/gocli/rwi"
+	"github.com/spiegel-im-spiegel/text/convert"
+	"github.com/spiegel-im-spiegel/text/detect"
 )
 
-func TestVersionNormal(t *testing.T) {
-	testCases := []struct {
-		args   []string
-		out    string
-		outErr string
-	}{
-		{args: []string{"version"}, out: "", outErr: "gonkf \n"},
+func ExampleFromTo() {
+	jisText := []byte{0x1b, 0x24, 0x42, 0x24, 0x33, 0x24, 0x73, 0x24, 0x4b, 0x24, 0x41, 0x24, 0x4f, 0x40, 0x24, 0x33, 0x26, 0x1b, 0x28, 0x42}
+	res, err := convert.FromTo(detect.ISO2022JP, detect.UTF8, bytes.NewReader(jisText))
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-
-	for _, tc := range testCases {
-		out := new(bytes.Buffer)
-		errOut := new(bytes.Buffer)
-		ui := rwi.New(
-			rwi.WithWriter(out),
-			rwi.WithErrorWriter(errOut),
-		)
-		exit := Execute(ui, tc.args)
-		if exit != exitcode.Normal {
-			t.Errorf("Execute() err = \"%v\", want \"%v\".", exit, exitcode.Normal)
-		}
-		if out.String() != tc.out {
-			t.Errorf("Execute() Stdout = \"%v\", want \"%v\".", out.String(), tc.out)
-		}
-		if errOut.String() != tc.outErr {
-			t.Errorf("Execute() Stderr = \"%v\", want \"%v\".", errOut.String(), tc.outErr)
-		}
+	buf := &bytes.Buffer{}
+	if _, err := buf.ReadFrom(res); err != nil {
+		fmt.Println(err)
+		return
 	}
+	fmt.Println(buf)
+	// Output:
+	// こんにちは世界
 }
 
 /* MIT License

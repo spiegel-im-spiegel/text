@@ -1,45 +1,32 @@
-package facade
+package ecode
 
-import (
-	"bytes"
-	"testing"
+import "fmt"
 
-	"github.com/spiegel-im-spiegel/gocli/exitcode"
-	"github.com/spiegel-im-spiegel/gocli/rwi"
+//ECode is error codes for gpgpdump
+type ECode int
+
+const (
+	ErrNullPointer ECode = iota + 1
+	ErrNoImplement
+	ErrInvalidOption
 )
 
-func TestVersionNormal(t *testing.T) {
-	testCases := []struct {
-		args   []string
-		out    string
-		outErr string
-	}{
-		{args: []string{"version"}, out: "", outErr: "gonkf \n"},
-	}
+var errMessage = map[ECode]string{
+	ErrNullPointer:   "null reference instance",
+	ErrNoImplement:   "no implementation",
+	ErrInvalidOption: "invalid option",
+}
 
-	for _, tc := range testCases {
-		out := new(bytes.Buffer)
-		errOut := new(bytes.Buffer)
-		ui := rwi.New(
-			rwi.WithWriter(out),
-			rwi.WithErrorWriter(errOut),
-		)
-		exit := Execute(ui, tc.args)
-		if exit != exitcode.Normal {
-			t.Errorf("Execute() err = \"%v\", want \"%v\".", exit, exitcode.Normal)
-		}
-		if out.String() != tc.out {
-			t.Errorf("Execute() Stdout = \"%v\", want \"%v\".", out.String(), tc.out)
-		}
-		if errOut.String() != tc.outErr {
-			t.Errorf("Execute() Stderr = \"%v\", want \"%v\".", errOut.String(), tc.outErr)
-		}
+func (e ECode) Error() string {
+	if s, ok := errMessage[e]; ok {
+		return s
 	}
+	return fmt.Sprintf("unknown error (%d)", int(e))
 }
 
 /* MIT License
  *
- * Copyright 2017-2019 Spiegel
+ * Copyright 2019 Spiegel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

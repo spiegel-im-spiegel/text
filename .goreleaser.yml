@@ -5,7 +5,10 @@ release:
     name: text
 
 builds:
-- goos:
+-
+  env:
+  - GO111MODULE=on
+  goos:
   - linux
   - darwin
   - windows
@@ -15,9 +18,9 @@ builds:
   - "386"
   - arm
   - arm64
-  goarm:
-  - "6"
   main: ./cli/gonkf/
+  flags:
+  - -trimpath
   ldflags: -s -w -X github.com/spiegel-im-spiegel/text/cli/gonkf/facade.Version={{ .Version }}
   binary: gonkf
 
@@ -39,7 +42,6 @@ archive:
   files:
   - LICENSE*
   - README*
-  - dependency.png
 
 changelog:
   sort: asc
