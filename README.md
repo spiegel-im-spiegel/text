@@ -13,7 +13,7 @@ See [go.mod](https://github.com/spiegel-im-spiegel/gpgpdump/blob/master/go.mod) 
 ### Import Package
 
 ```go
-import "github.com/spiegel-im-spiegel/openbd-api"
+import "github.com/spiegel-im-spiegel/text"
 ```
 
 ### detect
