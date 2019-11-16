@@ -1,40 +1,29 @@
-package facade
+package normalize_test
 
 import (
 	"bytes"
-	"testing"
+	"fmt"
+	"io"
+	"strings"
 
-	"github.com/spiegel-im-spiegel/gocli/exitcode"
-	"github.com/spiegel-im-spiegel/gocli/rwi"
+	"github.com/spiegel-im-spiegel/text/normalize"
 )
 
-func TestVersionNormal(t *testing.T) {
-	testCases := []struct {
-		args   []string
-		out    string
-		outErr string
-	}{
-		{args: []string{"version"}, out: "", outErr: "gonkf \n"},
+func ExampleReader() {
+	buf := &bytes.Buffer{}
+	if _, err := io.Copy(buf, normalize.Reader(strings.NewReader("ﾍﾟﾝｷﾞﾝ"), normalize.NFKC)); err != nil {
+		return
 	}
+	fmt.Println(buf)
+	// Output:
+	// ペンギン
+}
 
-	for _, tc := range testCases {
-		out := new(bytes.Buffer)
-		errOut := new(bytes.Buffer)
-		ui := rwi.New(
-			rwi.WithWriter(out),
-			rwi.WithErrorWriter(errOut),
-		)
-		exit := Execute(ui, tc.args)
-		if exit != exitcode.Normal {
-			t.Errorf("Execute() err = \"%v\", want \"%v\".", exit, exitcode.Normal)
-		}
-		if out.String() != tc.out {
-			t.Errorf("Execute() Stdout = \"%v\", want \"%v\".", out.String(), tc.out)
-		}
-		if errOut.String() != tc.outErr {
-			t.Errorf("Execute() Stderr = \"%v\", want \"%v\".", errOut.String(), tc.outErr)
-		}
-	}
+func ExampleString() {
+	res := normalize.String("ﾍﾟﾝｷﾞﾝ", normalize.NFKC)
+	fmt.Println(res)
+	// Output:
+	// ペンギン
 }
 
 /* MIT License

@@ -1,40 +1,24 @@
-package facade
+package detect_test
 
 import (
 	"bytes"
-	"testing"
+	"fmt"
 
-	"github.com/spiegel-im-spiegel/gocli/exitcode"
-	"github.com/spiegel-im-spiegel/gocli/rwi"
+	"github.com/spiegel-im-spiegel/text/detect"
 )
 
-func TestVersionNormal(t *testing.T) {
-	testCases := []struct {
-		args   []string
-		out    string
-		outErr string
-	}{
-		{args: []string{"version"}, out: "", outErr: "gonkf \n"},
-	}
+func ExampleEncodingBest() {
+	e := detect.EncodingBest(bytes.NewBufferString("Hello World"))
+	fmt.Println(e)
+	// Output:
+	// ISO-8859-1
+}
 
-	for _, tc := range testCases {
-		out := new(bytes.Buffer)
-		errOut := new(bytes.Buffer)
-		ui := rwi.New(
-			rwi.WithWriter(out),
-			rwi.WithErrorWriter(errOut),
-		)
-		exit := Execute(ui, tc.args)
-		if exit != exitcode.Normal {
-			t.Errorf("Execute() err = \"%v\", want \"%v\".", exit, exitcode.Normal)
-		}
-		if out.String() != tc.out {
-			t.Errorf("Execute() Stdout = \"%v\", want \"%v\".", out.String(), tc.out)
-		}
-		if errOut.String() != tc.outErr {
-			t.Errorf("Execute() Stderr = \"%v\", want \"%v\".", errOut.String(), tc.outErr)
-		}
-	}
+func ExampleEncodingJa() {
+	e := detect.EncodingJa(bytes.NewBufferString("こんにちは，世界"))
+	fmt.Println(e)
+	// Output:
+	// UTF-8
 }
 
 /* MIT License

@@ -1,40 +1,30 @@
-package facade
+package encode_test
 
 import (
 	"bytes"
-	"testing"
+	"fmt"
+	"io"
+	"strings"
 
-	"github.com/spiegel-im-spiegel/gocli/exitcode"
-	"github.com/spiegel-im-spiegel/gocli/rwi"
+	"github.com/spiegel-im-spiegel/text/detect"
+	"github.com/spiegel-im-spiegel/text/encode"
 )
 
-func TestVersionNormal(t *testing.T) {
-	testCases := []struct {
-		args   []string
-		out    string
-		outErr string
-	}{
-		{args: []string{"version"}, out: "", outErr: "gonkf \n"},
+func ExampleFromUTF8To() {
+	utf8Text := "こんにちは，世界\n"
+	res, err := encode.FromUTF8To(detect.ISO2022JP, strings.NewReader(utf8Text))
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-
-	for _, tc := range testCases {
-		out := new(bytes.Buffer)
-		errOut := new(bytes.Buffer)
-		ui := rwi.New(
-			rwi.WithWriter(out),
-			rwi.WithErrorWriter(errOut),
-		)
-		exit := Execute(ui, tc.args)
-		if exit != exitcode.Normal {
-			t.Errorf("Execute() err = \"%v\", want \"%v\".", exit, exitcode.Normal)
-		}
-		if out.String() != tc.out {
-			t.Errorf("Execute() Stdout = \"%v\", want \"%v\".", out.String(), tc.out)
-		}
-		if errOut.String() != tc.outErr {
-			t.Errorf("Execute() Stderr = \"%v\", want \"%v\".", errOut.String(), tc.outErr)
-		}
+	buf := &bytes.Buffer{}
+	if _, err := io.Copy(buf, res); err != nil {
+		fmt.Println(err)
+		return
 	}
+	fmt.Println(buf.Bytes())
+	// Output:
+	// [27 36 66 36 51 36 115 36 75 36 65 36 79 33 36 64 36 51 38 27 40 66 10]
 }
 
 /* MIT License

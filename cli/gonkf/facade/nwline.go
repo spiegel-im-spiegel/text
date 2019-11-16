@@ -4,11 +4,11 @@ import (
 	"io"
 	"os"
 
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"github.com/spiegel-im-spiegel/text"
+	"github.com/spiegel-im-spiegel/errs"
 	"github.com/spiegel-im-spiegel/text/cli/gonkf/list"
 	"github.com/spiegel-im-spiegel/text/cli/gonkf/nwline"
+	"github.com/spiegel-im-spiegel/text/ecode"
 	"github.com/spiegel-im-spiegel/text/newline"
 )
 
@@ -22,7 +22,7 @@ func newNwlineCmd() *cobra.Command {
 			str, _ := cmd.Flags().GetString("form")
 			form := newline.TypeofNewline(str)
 			if form == newline.Unknown {
-				return errors.Wrapf(text.ErrNoImplement, "error form %s", str)
+				return errs.Wrap(ecode.ErrNoImplement, "", errs.WithContext("form", str))
 			}
 			outPath, _ := cmd.Flags().GetString("output")
 
@@ -43,11 +43,10 @@ func newNwlineCmd() *cobra.Command {
 					return err
 				}
 				defer file.Close()
-				io.Copy(file, dst)
-			} else {
-				cui.WriteFrom(dst)
+				_, err = io.Copy(file, dst)
+				return err
 			}
-			return nil
+			return cui.WriteFrom(dst)
 		},
 	}
 
@@ -56,3 +55,26 @@ func newNwlineCmd() *cobra.Command {
 
 	return nwlineCmd
 }
+
+/* MIT License
+ *
+ * Copyright 2017-2019 Spiegel
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
