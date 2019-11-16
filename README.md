@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/spiegel-im-spiegel/text.svg?branch=master)](https://travis-ci.org/spiegel-im-spiegel/text)
 [![GitHub license](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/spiegel-im-spiegel/text/master/LICENSE)
-[![GitHub release](http://img.shields.io/github/release/spiegel-im-spiegel/mt.svg)](https://github.com/spiegel-im-spiegel/text/releases/latest)
+[![GitHub release](http://img.shields.io/github/release/spiegel-im-spiegel/text.svg)](https://github.com/spiegel-im-spiegel/text/releases/latest)
 
 ## Declare [text] module
 
-See [go.mod](https://github.com/spiegel-im-spiegel/gpgpdump/blob/master/go.mod) file. 
+See [go.mod](https://github.com/spiegel-im-spiegel/text/blob/master/go.mod) file. 
 
 ## Usage of package
 
