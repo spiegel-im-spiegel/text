@@ -1,3 +1,5 @@
+**This project is not active, and moved to [spiegel-im-spiegel/gnkf](https://github.com/spiegel-im-spiegel/gnkf)**.
+
 # [text] - Encoding/Decoding Text Package by [Golang]
 
 [![Build Status](https://travis-ci.org/spiegel-im-spiegel/text.svg?branch=master)](https://travis-ci.org/spiegel-im-spiegel/text)
